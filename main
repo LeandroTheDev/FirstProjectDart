@@ -1,0 +1,6 @@
+import 'level1.dart';
+main(){
+  List<double> status = [10,1,0,0,0];
+  List<String> inv = [];
+  level1.start(status, inv);
+}
