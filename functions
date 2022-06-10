@@ -1,0 +1,117 @@
+import 'dart:io';
+import 'character.dart';
+class funcoes {  
+      //Verificação de fala (Oque saiu, validação, oque era...)
+    static ver(resp,func,[var2,var3,var4,var5,var6,var7]){
+  while(true){
+      if(var2 == resp){
+        func[0] = 1;
+        break;
+      }
+      else if(var3 == resp){
+        func[0] = 2;
+        break;
+      }
+      else if(var4 == resp){
+        func[0] = 3;
+        break;
+      }
+      else if(var5 == resp){
+        func[0] = 4;
+        break;
+      }
+      else if(var6 == resp){
+        func[0] = 5;
+        break;
+      }
+      else if(var7 == resp){
+        func[0] = 6;
+        break;
+      }
+      else{
+        print("Nada acontece");
+        resp = stdin.readLineSync().toString().toLowerCase();
+    }
+  }
+  return func;
+}
+
+//Mecanias de luta
+static fight(List status,List inv,bool death,{vida,ataque,defesa,gold,}){
+List<int> func = [0];
+List estatus = [vida,ataque,defesa];
+edeath:while(estatus[0] > 0){
+print("\x1B[2J\x1B[0;0H");
+print("Sombra: |${estatus[0]} HP|${estatus[1]} Ataque|${estatus[2]} Defesa|");
+
+print("|Atacar|Defender|Magias|Status|Inventario");
+String resp = stdin.readLineSync().toString().toLowerCase();
+ver(resp,func,"atacar","defender","magias","status","inventario");
+  //atacar
+  if(func[0] == 1){
+    if(status[1] <= estatus[2]){
+      print("Imune");
+      stdin.readLineSync();
+    }
+    else{
+    estatus[0] = (estatus[0] - status[1]) + estatus[2];
+    print("Golpe desferido com sucesso causou: ${status[1] - estatus[2]} de dano");
+      if(estatus[0] <= 0){
+        print("Inimigo Eliminado");
+        stdin.readLineSync();
+        break edeath;
+      }
+    }
+    if(estatus[1] <= status[2]){
+      print("Você é imune");
+      stdin.readLineSync();
+    }
+    else{
+      status[0] = (status[0] - estatus[1]) + status[2];
+      print("Você sofreu ${estatus[1] - status[2]} de dano, você tem ${status[0]} de vida");
+      if(status[0] > 0)
+        stdin.readLineSync();
+          if(status[0] <= 0){
+            death = true;
+            print("Você perde sua visão...");
+            print("Você não consegue mais respirar");
+            print("Suas pernas não aguentam mais em pé");
+            print("Você cai no chão e por fim irá apodrecer");
+            print("Fim de jogo");
+            return death;
+          }
+    }
+  }
+  //status
+  if(func[0] == 4){
+    character.showstatus(status);
+    stdin.readLineSync();
+  }
+  //defender
+  if(func[0] == 2){
+    if(estatus[1] <= (status[2] *2)){
+    print("Você não sofreu danos no golpe");
+    stdin.readLineSync();
+    }
+    else if(status[0] + (status[2] * 2) <= estatus[1]){
+      death = true;
+      return death;
+    }
+    else{
+    print("Você defendeu o golpe sofrendo: ${estatus[1] - (status[2] * 2)} de dano");
+    status[0] = status[0] - (estatus[1] - (status[2] * 2));
+    stdin.readLineSync();
+    }
+  }
+  if(func[0] == 5){
+    character.showinv(inv, status: status);
+  }
+  status[3] = status[3] + 1;
+}
+status[3] = 0.0;
+}
+
+
+
+
+}
