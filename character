@@ -1,0 +1,109 @@
+import 'dart:io';
+
+class character {
+  //Mudar status
+
+  static statuschange(List status,{mudarVida,mudarAttack,mudarDefesa,mudarOuro,add}){
+    if(add == false){
+    if(mudarVida != null){
+      status[0] = status[0] - mudarVida;
+    }
+    if(mudarAttack != null){
+      status[1] = status[1] - mudarAttack;
+    }
+    if(mudarDefesa != null){
+      status[2] = status[2] - mudarDefesa;
+    }
+    if(mudarOuro != null){
+      status[3] = status[3] - mudarOuro;
+    }
+    } else{
+      if(mudarVida != null){
+      status[0] = status[0] + mudarVida;
+    }
+    if(mudarAttack != null){
+      status[1] = status[1] + mudarAttack;
+    }
+    if(mudarDefesa != null){
+      status[2] = status[2] + mudarDefesa;
+    }
+    if(mudarOuro != null){
+      status[3] = status[3] + mudarOuro;
+    }
+    }
+    return status;
+  }
+
+
+  //Mostrar status
+
+  static void showstatus(List status){
+    double vida = status[0];
+    vida = double.parse(vida.toStringAsFixed(2));
+    print('Você tem ${vida} HP, ${status[1]} Ataque, ${status[2]} Defesa, ${status[3]} Mana, ${status[4]} Ouro.');
+  }
+
+
+  //Adicionar item ao inventario
+
+  static inv(List<String> inv, {add,item, upgradegear = 5}){
+    if(inv.length >= upgradegear){
+      print("Inventario cheio");
+    }
+    else{
+      if(add == true){
+      inv.add("Empty");
+      int i = 0;
+        for(i; i < inv.length; i++){
+          if(inv[i] == "Empty"){
+          inv[i] = item;
+          break;
+          }
+        }
+      }
+    }
+    return inv;
+  }
+
+  //Mostrar inventario
+  static List showinv(List inv, {status}){
+    print("\x1B[2J\x1B[0;0H");
+    String resp = "";
+    int i = 0;
+    stdout.write("Inventario:");
+    while(i < inv.length){
+      stdout.write(" |${inv[i]}|");
+      i++;
+    }
+    print("");
+  //Fim Mostrar inventario
+  //Mecanica de uso
+  if(status != null){
+    print("|Digite o item|Sair|");
+    resp = stdin.readLineSync().toString().toLowerCase();
+    if(resp == "sair")
+    return status;
+    for(i = 0; i < inv.length; i++){
+      if(resp == inv[i]){
+        if(resp == "hp flask"){
+        status[0] = status[0] + 3;
+          if(status[0] > 10){
+          status[0] = 10.0;
+          print("Você usou HP Flask");
+          stdin.readLineSync();
+          inv.removeAt(i);
+          return status;
+          }
+        }
+      }
+      else
+      print("Voce não tem esse item");
+      stdin.readLineSync();
+    }
+    print("Voce não tem esse item");
+  //Seleção de item e propriedade de item
+
+  }
+    return inv;
+  }
+}
