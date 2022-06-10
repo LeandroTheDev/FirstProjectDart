@@ -1,0 +1,117 @@
+import 'dart:io';
+import 'functions.dart';
+import 'character.dart';
+class level1 {
+
+
+  static start(List<double> status,List<String> inv){
+  //Criação do personagem
+  print("\x1B[2J\x1B[0;0H");
+  bool death = false;
+  List<int> func = [0];
+  String resp = "";
+
+  //Inicio da fase e criação da morte
+  death:while(death == false){
+
+  print("Você acorda em meio ao vazio");
+  print("Você não vê nada além de escuridão");
+  print("|Andar|");
+  resp = stdin.readLineSync().toString().toLowerCase();
+  funcoes.ver(resp,func,"andar");
+    resp = "";
+    while(resp == ""){
+      print("\x1B[2J\x1B[0;0H");
+      print("Você encontra uma sombra");
+      print("Status do seu personagem:");
+      character.showstatus(status);
+      print("|Conversar|Lutar|Ignorar|Inventario|");
+      resp = stdin.readLineSync().toString().toLowerCase();
+      funcoes.ver(resp,func,"conversar","lutar","ignorar","inventario");
+      print("\x1B[2J\x1B[0;0H");
+      if(func[0] == 4){
+        character.showinv(inv);
+        resp = "";
+        stdin.readLineSync();
+      }
+    }
+    //Conversar com ele
+    if(func[0] == 1){
+      print("Sombra: ...");
+      print("Tudo que restou foi dor e sofrimento");
+      print("Que os deuses tenham piedade daqueles que já foram");
+      print("Aqueles que nunca poderão sentir a felicidade");
+      print("Agonia é a unica coisa que existe nesse mundo");
+      print("Fomos consumidos e destruidos por algo que nós mesmo desejamos");
+      print("...");
+      print("|Lutar|Ignorar|Conversar|");
+      resp = stdin.readLineSync().toString().toLowerCase();
+      funcoes.ver(resp,func,"conversar","lutar","ignorar");
+      if(func[0] == 1){
+        print("\x1B[2J\x1B[0;0H");
+        print("Não escute.");
+        print("Se ouvir não siga");
+        print("Se sentir fuja");
+        print("Se olhar reze");
+        print("Ele já está te observando...");
+        print("|Lutar|Ignorar|Conversar|");
+        resp = stdin.readLineSync().toString().toLowerCase();
+        funcoes.ver(resp,func,"conversar","lutar","ignorar");
+        if(func[0] == 1){
+          print("\x1B[2J\x1B[0;0H");
+          print("......");
+          print("......");
+          print("Morte e solidão");
+          print("Fuja dela o maximo que puder");
+          print("|Pegar HP FLASK?|");
+          print("|s/n|");
+          resp = stdin.readLineSync().toString().toLowerCase();
+          funcoes.ver(resp,func,"s","n");
+          print("\x1B[2J\x1B[0;0H");
+          if(func[0] == 1){
+            if(inv.length < 10)
+            inv.add("hp flask");
+            print("Você recebeu HP FLASK");
+            print("|Ignorar|Lutar|");
+            resp = stdin.readLineSync().toString().toLowerCase();
+            funcoes.ver(resp,func,"lutar","ignorar");
+            if(func[0] == 1)
+              func[0] = 2;
+            else
+            func[0] = 3;
+          }
+          else if(inv.length >= 10)
+          print("Você não tem espaço");
+          else{
+            print("Que assim seja...");
+            print("|Ignorar|Lutar|");
+            resp = stdin.readLineSync().toString().toLowerCase();
+            funcoes.ver(resp,func,null,"lutar","ignorar");
+          }
+        }
+      }
+    }
+    if(func[0] == 3){
+      print("Você ignora a sombra e continua a caminhar no vazio");
+    }
+    if(func[0] == 2){
+      funcoes.fight(status, inv, death,ataque: 0.5,vida: 3,defesa: 0);
+      if(death == true)
+      break death;
+    }
+    if(func[0] == 4){
+      character.showinv(inv,status: status);
+    }
+
+  
+
+
+
+
+
+
+
+  return;
+  }
+}
+}
